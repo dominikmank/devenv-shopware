@@ -77,7 +77,7 @@ in {
         MAILER_URL = lib.mkDefault "smtp://127.0.0.1:${toString cfg.mailhogSmtpPort}?encryption=&auth_mode=";
         MAILER_DSN = lib.mkDefault "smtp://127.0.0.1:${toString cfg.mailhogSmtpPort}?encryption=&auth_mode=";
 
-        APP_URL = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
+        # loberon # APP_URL = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
         CYPRESS_baseUrl = lib.mkDefault "http://127.0.0.1:${toString cfg.httpPort}";
 
         SQL_SET_DEFAULT_SESSION_VARIABLES = lib.mkDefault "0";
