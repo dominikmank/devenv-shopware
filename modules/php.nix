@@ -36,14 +36,13 @@ let
   ];
 
   phpVersion = if builtins.hasAttr "PHP_VERSION" config.env then config.env.PHP_VERSION else cfg.phpVersion;
-  package = config.languages.php.package;
 
-  phpPackage = package.buildEnv {
+  phpPackage = config.languages.php.package.buildEnv {
     extensions = { all, enabled }: with all; enabled
       ++ (lib.optional config.services.redis.enable redis)
       ++ (lib.optional config.services.blackfire.enable blackfire)
       ++ (lib.optional config.services.rabbitmq.enable amqp)
-      ++ lib.attrsets.attrValues (lib.attrsets.getAttrs cfg.additionalPhpExtensions package.extensions);
+      ++ lib.attrsets.attrValues (lib.attrsets.getAttrs cfg.additionalPhpExtensions);
     extraConfig = phpConfig;
   };
 
