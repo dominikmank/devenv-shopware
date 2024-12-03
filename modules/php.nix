@@ -38,20 +38,12 @@ let
   phpVersion = if builtins.hasAttr "PHP_VERSION" config.env then config.env.PHP_VERSION else cfg.phpVersion;
 
   phpPackage = config.languages.php.package.buildEnv {
-    extensions = { all, enabled }: with all; enabled
-      ++ (lib.optional config.services.redis.enable redis)
-      ++ (lib.optional config.services.blackfire.enable blackfire)
-      ++ (lib.optional config.services.rabbitmq.enable amqp)
-      ++ lib.attrsets.attrValues (lib.attrsets.getAttrs cfg.additionalPhpExtensions);
-    extraConfig = phpConfig;
+    { all, enabled }: with all; (builtins.filter (e: e.extensionName != "blackfire") enabled);
+    extraConfig = config.languages.php.ini;
   };
 
   phpXdebug = config.languages.php.package.buildEnv {
-    extensions = { all, enabled }: with all; enabled
-      ++ [ xdebug ]
-      ++ (lib.optional config.services.redis.enable redis)
-      ++ (lib.optional config.services.rabbitmq.enable amqp)
-      ++ lib.attrsets.attrValues (lib.attrsets.getAttrs cfg.additionalPhpExtensions);
+    { all, enabled }: with all; (builtins.filter (e: e.extensionName != "blackfire" && e.extensionName != "xdebug") enabled);
     extraConfig = phpConfig;
   };
 in {
