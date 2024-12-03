@@ -36,7 +36,7 @@ let
   ];
 
   phpVersion = if builtins.hasAttr "PHP_VERSION" config.env then config.env.PHP_VERSION else cfg.phpVersion;
-  package = inputs.phps.packages.${pkgs.stdenv.system}.${phpVersion};
+  package = config.languages.php.package;
 
   phpPackage = package.buildEnv {
     extensions = { all, enabled }: with all; enabled
