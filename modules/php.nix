@@ -46,12 +46,12 @@ let
     extraConfig = phpConfig;
   };
 
-  phpXdebug = package.buildEnv {
+  phpXdebug = config.languages.php.package.buildEnv {
     extensions = { all, enabled }: with all; enabled
       ++ [ xdebug ]
       ++ (lib.optional config.services.redis.enable redis)
       ++ (lib.optional config.services.rabbitmq.enable amqp)
-      ++ lib.attrsets.attrValues (lib.attrsets.getAttrs cfg.additionalPhpExtensions package.extensions);
+      ++ lib.attrsets.attrValues (lib.attrsets.getAttrs cfg.additionalPhpExtensions);
     extraConfig = phpConfig;
   };
 in {
